@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: Constants.locationKey) == nil {
             defaults.set("Los Angeles", forKey: Constants.locationKey)
         }
+        if defaults.value(forKey: Constants.unitsKey) == nil {
+            defaults.set("Fahrenheit (°F)", forKey: Constants.unitsKey)
+        }
         return true
     }
 

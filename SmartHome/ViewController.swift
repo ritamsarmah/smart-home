@@ -9,7 +9,6 @@
 import UIKit
 
 // Globals
-let units: Units = .fahrenheit
 let step: Float = 1
 
 class ViewController: UIViewController {
@@ -79,11 +78,14 @@ class ViewController: UIViewController {
             self.navigationController?.navigationBar.prefersLargeTitles = true
             self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         }
+        
         let userLocation = defaults.string(forKey: Constants.locationKey)
         if currentLocation != userLocation {
             currentLocation = userLocation
-            getWeatherData(for: currentLocation!)
         }
+        
+        // Refresh weather data
+        self.getWeatherData(for: self.currentLocation!)
     }
     
     func configureUI() {
@@ -132,20 +134,29 @@ class ViewController: UIViewController {
             greetingLabel.text = "Good Morning"
         case 12..<18:
             greetingLabel.text = "Good Afternoon"
-        case 18..<21:
-            greetingLabel.text = "Good Evening"
         default:
-            greetingLabel.text = "Good Night"
+            greetingLabel.text = "Good Evening"
         }
     }
     
     func getWeatherData(for city: String) {
+        // Check user settings for units
+        var units: Units = .fahrenheit
+        
+        let userUnits = self.defaults.string(forKey: Constants.unitsKey)!
+        if userUnits == "Fahrenheit (°F)" {
+            units = .fahrenheit
+        } else if userUnits == "Celsius (°C)" {
+            units = .celsius
+        }
+        
         // Get weather data
-        weather.getWeather(for: city, in: .fahrenheit) { (data, error) in
+        weather.getWeather(for: city, in: units) { (data, error) in
             if let weatherData = data {
+                let imgData = try! Data(contentsOf: weatherData.getIconURL())
+                let image = UIImage(data: imgData)
+                
                 DispatchQueue.main.async {
-                    let imgData = try! Data(contentsOf: weatherData.getIconURL())
-                    let image = UIImage(data: imgData)
                     self.weatherImageView.image = image
                     
                     // Set temp label

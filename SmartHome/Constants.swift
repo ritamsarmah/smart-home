@@ -9,5 +9,10 @@
 import Foundation
 
 struct Constants {
+    // User Defaults
     static let locationKey = "location"
+    static let unitsKey = "units"
+    
+    // API Key
+    static let weatherKey = "ec2006f6698767d3866c798e7372d65c"
 }

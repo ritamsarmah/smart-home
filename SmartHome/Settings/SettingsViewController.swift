@@ -12,6 +12,7 @@ class SettingsViewController: UITableViewController {
 
     // Outlets
     @IBOutlet weak var locationDetailLabel: UILabel!
+    @IBOutlet weak var unitsDetailLabel: UILabel!
     
     // Properties
     let defaults = UserDefaults.standard
@@ -29,6 +30,11 @@ class SettingsViewController: UITableViewController {
         let userLocation = defaults.string(forKey: Constants.locationKey)
         if locationDetailLabel.text != userLocation {
             locationDetailLabel.text = userLocation
+        }
+        
+        let userUnits = defaults.string(forKey: Constants.unitsKey)
+        if unitsDetailLabel.text != userUnits {
+            unitsDetailLabel.text = userUnits
         }
     }
     

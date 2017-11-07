@@ -7,8 +7,6 @@
 
 import Foundation
 
-let key = "ec2006f6698767d3866c798e7372d65c"
-
 enum Units: String {
     case fahrenheit = "imperial"
     case celsius = "metric"
@@ -52,7 +50,7 @@ class Weather {
         components.host = "api.openweathermap.org"
         components.path = "/data/2.5/weather"
         let query = URLQueryItem(name: "q", value: city.replacingOccurrences(of: " ", with: "+"))
-        let appid = URLQueryItem(name: "appid", value: key)
+        let appid = URLQueryItem(name: "appid", value: Constants.weatherKey)
         let units = URLQueryItem(name: "units", value: units.rawValue)
         components.queryItems = [query, appid, units]
         
