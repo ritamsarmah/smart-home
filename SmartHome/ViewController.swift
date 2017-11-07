@@ -75,8 +75,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = true
-            self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
+            navigationController?.navigationBar.prefersLargeTitles = true
         }
         
         let userLocation = defaults.string(forKey: Constants.locationKey)
@@ -161,7 +160,7 @@ class ViewController: UIViewController {
                     
                     // Set temp label
                     let unitsText = units == .fahrenheit ? "F" : "C"
-                    self.tempLabel.text = "It's \(weatherData.getTemperature())°\(unitsText) in \(city). \(weatherData.getCondition())."
+                    self.tempLabel.text = "It's \(Int(round(weatherData.getTemperature())))°\(unitsText) in \(city). \(weatherData.getCondition())."
                 }
             }
         }

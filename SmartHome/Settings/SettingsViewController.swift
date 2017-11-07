@@ -24,8 +24,7 @@ class SettingsViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = false
-            self.navigationController?.navigationItem.largeTitleDisplayMode = .never
+            navigationItem.largeTitleDisplayMode = .never
         }
         let userLocation = defaults.string(forKey: Constants.locationKey)
         if locationDetailLabel.text != userLocation {
