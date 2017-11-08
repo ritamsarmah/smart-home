@@ -32,7 +32,6 @@ class ViewController: UIViewController {
     
     // MARK: - Properties
     let weather = Weather()
-    var currentLocation: String?
     
     let defaults = UserDefaults.standard // For persisting user preferences
     
@@ -78,13 +77,15 @@ class ViewController: UIViewController {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
         
-        let userLocation = defaults.string(forKey: Constants.locationKey)
-        if currentLocation != userLocation {
-            currentLocation = userLocation
-        }
+        // Set up observer for when application becomes active
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
         
         // Refresh weather data
-        self.getWeatherData(for: self.currentLocation!)
+        self.getWeatherData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationDidBecomeActive, object: nil)
     }
     
     func configureUI() {
@@ -138,11 +139,12 @@ class ViewController: UIViewController {
         }
     }
     
-    func getWeatherData(for city: String) {
-        // Check user settings for units
-        var units: Units = .fahrenheit
-        
+    func getWeatherData() {
+        // Check user settings for location and units
+        let city = defaults.string(forKey: Constants.locationKey)!
         let userUnits = self.defaults.string(forKey: Constants.unitsKey)!
+        
+        var units: Units = .fahrenheit
         if userUnits == "Fahrenheit (°F)" {
             units = .fahrenheit
         } else if userUnits == "Celsius (°C)" {
@@ -152,14 +154,14 @@ class ViewController: UIViewController {
         // Get weather data
         weather.getWeather(for: city, in: units) { (data, error) in
             if let weatherData = data {
-                let imgData = try! Data(contentsOf: weatherData.getIconURL())
-                let image = UIImage(data: imgData)
+
+                let image = UIImage(named: "\(weatherData.getIconName()).pdf")
                 
                 DispatchQueue.main.async {
                     self.weatherImageView.image = image
                     
                     // Set temp label
-                    let unitsText = units == .fahrenheit ? "F" : "C"
+                    let unitsText = (units == .fahrenheit) ? "F" : "C"
                     self.tempLabel.text = "It's \(Int(round(weatherData.getTemperature())))°\(unitsText) in \(city). \(weatherData.getCondition())."
                 }
             }
@@ -170,15 +172,17 @@ class ViewController: UIViewController {
         performSegue(withIdentifier: "showSettings", sender: self)
     }
     
+    @objc func applicationDidBecomeActive() {
+        getWeatherData()
+    }
+    
     @IBAction func lightButtonPressed(_ sender: UIButton) {
         lightEnabled = !lightEnabled
-        // TODO: call arduino before UI stuff
         setImage(for: sender, with: lightEnabled)
     }
     
     @IBAction func fanButtonPressed(_ sender: UIButton) {
         fanEnabled = !fanEnabled
-        // TODO: call arduino before UI stuff
         setImage(for: sender, with: fanEnabled)
     }
     
@@ -195,5 +199,6 @@ class ViewController: UIViewController {
         lightPower = roundedValue
         sender.value = roundedValue
     }
+
 }
 

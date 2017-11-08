@@ -38,8 +38,34 @@ struct WeatherData: Codable {
         return weather[0].main
     }
     
-    func getIconURL() -> URL {
-        return URL(string: "http://openweathermap.org/img/w/\(weather[0].icon).png")!
+    func getIconName() -> String {
+        let icon = weather[0].icon
+        switch icon {
+        case "01d":
+            return "sun"
+        case "01n":
+            return "moon"
+        case "02d":
+            return "suncloud"
+        case "02n":
+            return "mooncloud"
+        case "03d", "03n", "04d", "04n":
+            return "twoclouds"
+        case "09d", "09n":
+            return "rain"
+        case "10d":
+            return "sunrain"
+        case "10n":
+            return "moonrain"
+        case "11d", "11n":
+            return "storm"
+        case "13d", "13n":
+            return "snow"
+        case "50d", "50n":
+            return "fog"
+        default:
+            return "sun"
+        }
     }
 }
 
