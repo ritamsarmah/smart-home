@@ -1,5 +1,5 @@
 //
-//  LocationViewController.swift
+//  UserLocationViewController.swift
 //  SmartHome
 //
 //  Created by Ritam Sarmah on 11/5/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LocationViewController: UITableViewController {
+class UserLocationViewController: UITableViewController {
     
     let defaults = UserDefaults.standard
     
@@ -19,7 +19,7 @@ class LocationViewController: UITableViewController {
         super.viewDidLoad()
         self.title = "Location"
 
-        let location = defaults.string(forKey: Constants.locationKey)!
+        let location = defaults.string(forKey: PreferencesKeys.city)!
         selectedIndexPath = IndexPath(row: locations.index(of: location)!, section: 0)
     }
 
@@ -59,6 +59,6 @@ class LocationViewController: UITableViewController {
         tableView.cellForRow(at: selectedIndexPath)?.accessoryType = .none
         
         selectedIndexPath = indexPath
-        defaults.set(locations[indexPath.row], forKey: Constants.locationKey)
+        defaults.set(locations[indexPath.row], forKey: PreferencesKeys.city)
     }
 }

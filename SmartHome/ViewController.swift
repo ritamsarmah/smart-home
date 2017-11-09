@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 // Globals
 let step: Float = 1
@@ -141,8 +142,8 @@ class ViewController: UIViewController {
     
     func getWeatherData() {
         // Check user settings for location and units
-        let city = defaults.string(forKey: Constants.locationKey)!
-        let userUnits = self.defaults.string(forKey: Constants.unitsKey)!
+        let city = defaults.string(forKey: PreferencesKeys.city)!
+        let userUnits = self.defaults.string(forKey: PreferencesKeys.units)!
         
         var units: Units = .fahrenheit
         if userUnits == "Fahrenheit (°F)" {
@@ -200,5 +201,11 @@ class ViewController: UIViewController {
         sender.value = roundedValue
     }
 
+}
+
+// https://www.raywenderlich.com/136165/core-location-geofencing-tutorial
+extension ViewController: CLLocationManagerDelegate {
+    
+    
 }
 

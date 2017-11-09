@@ -8,17 +8,19 @@
 
 import UIKit
 
-class SettingsViewController: UITableViewController {
+class SettingsViewController: UITableViewController, UITextFieldDelegate {
 
     // Outlets
     @IBOutlet weak var locationDetailLabel: UILabel!
     @IBOutlet weak var unitsDetailLabel: UILabel!
+    @IBOutlet weak var addressTextField: UITextField!
     
     // Properties
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addressTextField.delegate = self
         configureUI()
     }
     
@@ -26,12 +28,12 @@ class SettingsViewController: UITableViewController {
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .never
         }
-        let userLocation = defaults.string(forKey: Constants.locationKey)
+        let userLocation = defaults.string(forKey: PreferencesKeys.city)
         if locationDetailLabel.text != userLocation {
             locationDetailLabel.text = userLocation
         }
         
-        let userUnits = defaults.string(forKey: Constants.unitsKey)
+        let userUnits = defaults.string(forKey: PreferencesKeys.units)
         if unitsDetailLabel.text != userUnits {
             unitsDetailLabel.text = userUnits
         }
@@ -45,8 +47,12 @@ class SettingsViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        addressTextField.resignFirstResponder()
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }

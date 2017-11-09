@@ -44,5 +44,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>SmartHome requires access to your phone’s location to determine when you are near the Arduino smart home.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>SmartHome requires access to your phone’s location to determine when you are near the Arduino smart home.</string>
 </dict>
 </plist>

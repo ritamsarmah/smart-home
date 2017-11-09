@@ -19,7 +19,7 @@ class UnitsViewController: UITableViewController {
         super.viewDidLoad()
         self.title = "Temperature Unit"
         
-        let userUnits = defaults.string(forKey: Constants.unitsKey)!
+        let userUnits = defaults.string(forKey: PreferencesKeys.units)!
         selectedIndexPath = IndexPath(row: units.index(of: userUnits)!, section: 0)
     }
 
@@ -59,6 +59,6 @@ class UnitsViewController: UITableViewController {
         tableView.cellForRow(at: selectedIndexPath)?.accessoryType = .none
         
         selectedIndexPath = indexPath
-        defaults.set(units[indexPath.row], forKey: Constants.unitsKey)
+        defaults.set(units[indexPath.row], forKey: PreferencesKeys.units)
     }
 }

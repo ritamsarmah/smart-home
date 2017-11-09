@@ -14,9 +14,9 @@
 		200F85EA1FA06F54003C556A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 200F85E81FA06F54003C556A /* LaunchScreen.storyboard */; };
 		200F85F21FA06F81003C556A /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200F85F11FA06F81003C556A /* Weather.swift */; };
 		20A0E2B81FB2194100FABA02 /* UnitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0E2B71FB2194100FABA02 /* UnitsViewController.swift */; };
-		20B857411FAF6E0D009A7C00 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B857401FAF6E0D009A7C00 /* LocationViewController.swift */; };
-		20B857431FAF6E21009A7C00 /* ArduinoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B857421FAF6E21009A7C00 /* ArduinoViewController.swift */; };
+		20B857411FAF6E0D009A7C00 /* UserLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B857401FAF6E0D009A7C00 /* UserLocationViewController.swift */; };
 		20B857451FAF752A009A7C00 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B857441FAF752A009A7C00 /* Constants.swift */; };
+		20D7EB6E1FB4EA320087216C /* HomeLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EB6D1FB4EA320087216C /* HomeLocationViewController.swift */; };
 		20D8B9AC1FAE49D70077DB85 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D8B9AB1FAE49D70077DB85 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,9 +30,9 @@
 		200F85EB1FA06F54003C556A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		200F85F11FA06F81003C556A /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		20A0E2B71FB2194100FABA02 /* UnitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsViewController.swift; sourceTree = "<group>"; };
-		20B857401FAF6E0D009A7C00 /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
-		20B857421FAF6E21009A7C00 /* ArduinoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArduinoViewController.swift; sourceTree = "<group>"; };
+		20B857401FAF6E0D009A7C00 /* UserLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationViewController.swift; sourceTree = "<group>"; };
 		20B857441FAF752A009A7C00 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		20D7EB6D1FB4EA320087216C /* HomeLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeLocationViewController.swift; sourceTree = "<group>"; };
 		20D8B9AB1FAE49D70077DB85 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,10 +77,10 @@
 		20A0E2B61FB218FC00FABA02 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				20D7EB6D1FB4EA320087216C /* HomeLocationViewController.swift */,
 				20D8B9AB1FAE49D70077DB85 /* SettingsViewController.swift */,
 				20A0E2B71FB2194100FABA02 /* UnitsViewController.swift */,
-				20B857401FAF6E0D009A7C00 /* LocationViewController.swift */,
-				20B857421FAF6E21009A7C00 /* ArduinoViewController.swift */,
+				20B857401FAF6E0D009A7C00 /* UserLocationViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -170,9 +170,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20B857411FAF6E0D009A7C00 /* LocationViewController.swift in Sources */,
-				20B857431FAF6E21009A7C00 /* ArduinoViewController.swift in Sources */,
+				20B857411FAF6E0D009A7C00 /* UserLocationViewController.swift in Sources */,
 				200F85E21FA06F54003C556A /* ViewController.swift in Sources */,
+				20D7EB6E1FB4EA320087216C /* HomeLocationViewController.swift in Sources */,
 				200F85F21FA06F81003C556A /* Weather.swift in Sources */,
 				20B857451FAF752A009A7C00 /* Constants.swift in Sources */,
 				200F85E01FA06F54003C556A /* AppDelegate.swift in Sources */,

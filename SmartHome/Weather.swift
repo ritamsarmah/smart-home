@@ -39,8 +39,7 @@ struct WeatherData: Codable {
     }
     
     func getIconName() -> String {
-        let icon = weather[0].icon
-        switch icon {
+        switch weather[0].icon {
         case "01d":
             return "sun"
         case "01n":
@@ -49,7 +48,9 @@ struct WeatherData: Codable {
             return "suncloud"
         case "02n":
             return "mooncloud"
-        case "03d", "03n", "04d", "04n":
+        case "03d", "03n":
+            return "cloud"
+        case "04d", "04n":
             return "twoclouds"
         case "09d", "09n":
             return "rain"
@@ -76,7 +77,7 @@ class Weather {
         components.host = "api.openweathermap.org"
         components.path = "/data/2.5/weather"
         let query = URLQueryItem(name: "q", value: city.replacingOccurrences(of: " ", with: "+"))
-        let appid = URLQueryItem(name: "appid", value: Constants.weatherKey)
+        let appid = URLQueryItem(name: "appid", value: WeatherAPI.key)
         let units = URLQueryItem(name: "units", value: units.rawValue)
         components.queryItems = [query, appid, units]
         

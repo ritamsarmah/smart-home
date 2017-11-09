@@ -8,11 +8,15 @@
 
 import Foundation
 
-struct Constants {
+struct PreferencesKeys {
     // User Defaults
-    static let locationKey = "location"
-    static let unitsKey = "units"
-    
-    // API Key
-    static let weatherKey = "ec2006f6698767d3866c798e7372d65c"
+    static let city = "city"
+    static let units = "units"
+    static let automateDevice = "automation"
+    static let homeLocation = "homeLocation"
+    static let ipAddress = "ip"
+}
+
+struct WeatherAPI {
+    static let key = "ec2006f6698767d3866c798e7372d65c"
 }
