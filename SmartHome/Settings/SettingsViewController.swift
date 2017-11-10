@@ -9,7 +9,7 @@
 import UIKit
 
 class SettingsViewController: UITableViewController, UITextFieldDelegate {
-
+    
     // Outlets
     @IBOutlet weak var locationDetailLabel: UILabel!
     @IBOutlet weak var unitsDetailLabel: UILabel!
@@ -37,6 +37,11 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         if unitsDetailLabel.text != userUnits {
             unitsDetailLabel.text = userUnits
         }
+        
+        let useraddress = defaults.url(forKey: PreferencesKeys.ipAddress)
+        if addressTextField.text != useraddress?.absoluteString {
+            addressTextField.text = useraddress?.absoluteString
+        }
     }
     
     func configureUI() {
@@ -50,9 +55,12 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         addressTextField.resignFirstResponder()
     }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        if let ip = textField.text {
+            let url = URL(string: ip)
+            defaults.set(url, forKey: PreferencesKeys.ipAddress)}
         return true
     }
 }

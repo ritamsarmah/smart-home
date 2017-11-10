@@ -18,6 +18,7 @@
 		20B857451FAF752A009A7C00 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B857441FAF752A009A7C00 /* Constants.swift */; };
 		20D7EB6E1FB4EA320087216C /* HomeLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EB6D1FB4EA320087216C /* HomeLocationViewController.swift */; };
 		20D8B9AC1FAE49D70077DB85 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D8B9AB1FAE49D70077DB85 /* SettingsViewController.swift */; };
+		B63262A41FB66DAE002AB96E /* ArduinoServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63262A31FB66DAE002AB96E /* ArduinoServer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		20B857441FAF752A009A7C00 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		20D7EB6D1FB4EA320087216C /* HomeLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeLocationViewController.swift; sourceTree = "<group>"; };
 		20D8B9AB1FAE49D70077DB85 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		B63262A31FB66DAE002AB96E /* ArduinoServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArduinoServer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				200F85E11FA06F54003C556A /* ViewController.swift */,
 				20B857441FAF752A009A7C00 /* Constants.swift */,
 				200F85F11FA06F81003C556A /* Weather.swift */,
+				B63262A31FB66DAE002AB96E /* ArduinoServer.swift */,
 				20A0E2B61FB218FC00FABA02 /* Settings */,
 				20D8B9AD1FAE49DF0077DB85 /* Supporting Files */,
 			);
@@ -177,6 +180,7 @@
 				20B857451FAF752A009A7C00 /* Constants.swift in Sources */,
 				200F85E01FA06F54003C556A /* AppDelegate.swift in Sources */,
 				20A0E2B81FB2194100FABA02 /* UnitsViewController.swift in Sources */,
+				B63262A41FB66DAE002AB96E /* ArduinoServer.swift in Sources */,
 				20D8B9AC1FAE49D70077DB85 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -26,6 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: PreferencesKeys.units) == nil {
             defaults.set("Fahrenheit (°F)", forKey: PreferencesKeys.units)
         }
+        if defaults.value(forKey: PreferencesKeys.ipAddress) == nil {
+            defaults.set(URL(string: "192.168.0.101"), forKey: PreferencesKeys.ipAddress)
+        }
+        
+        
+        
         // TODO: Add automation key for defaults
         
         // Configure locationManager
