@@ -13,10 +13,13 @@ struct PreferencesKeys {
     static let city = "city"
     static let units = "units"
     static let automateDevice = "automation"
-    static let homeLocation = "homeLocation"
     static let ipAddress = "ip"
+    static let atHome = "atHome"
 }
 
-struct WeatherAPI {
+struct Constants {
     static let key = "ec2006f6698767d3866c798e7372d65c"
+    
+    // CoreLocation
+    static let regionID = "home"
 }

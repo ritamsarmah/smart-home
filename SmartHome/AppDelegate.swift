@@ -14,11 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     let locationManager = CLLocationManager()
+    let defaults = UserDefaults.standard
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // Set default user settings
-        let defaults = UserDefaults.standard
+        
         if defaults.value(forKey: PreferencesKeys.city) == nil {
             defaults.set("Los Angeles", forKey: PreferencesKeys.city)
         }
@@ -61,15 +62,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if region is CLCircularRegion {
-            print("Entered region")
             // TODO: Tell Arduino
+            defaults.set(true, forKey: PreferencesKeys.atHome)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
-            print("Exited region")
             // TODO: Tell Arduino
+            defaults.set(false, forKey: PreferencesKeys.atHome)
         }
     }
 }

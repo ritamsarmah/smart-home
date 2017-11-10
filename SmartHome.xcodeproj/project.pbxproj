@@ -66,7 +66,9 @@
 		200F85DE1FA06F54003C556A /* SmartHome */ = {
 			isa = PBXGroup;
 			children = (
+				200F85DF1FA06F54003C556A /* AppDelegate.swift */,
 				200F85E11FA06F54003C556A /* ViewController.swift */,
+				20B857441FAF752A009A7C00 /* Constants.swift */,
 				200F85F11FA06F81003C556A /* Weather.swift */,
 				20A0E2B61FB218FC00FABA02 /* Settings */,
 				20D8B9AD1FAE49DF0077DB85 /* Supporting Files */,
@@ -88,8 +90,6 @@
 		20D8B9AD1FAE49DF0077DB85 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				200F85DF1FA06F54003C556A /* AppDelegate.swift */,
-				20B857441FAF752A009A7C00 /* Constants.swift */,
 				200F85E31FA06F54003C556A /* Main.storyboard */,
 				200F85E61FA06F54003C556A /* Assets.xcassets */,
 				200F85E81FA06F54003C556A /* LaunchScreen.storyboard */,
@@ -315,7 +315,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 582KY6XV9S;
+				DEVELOPMENT_TEAM = XXYXWGAW9Y;
 				INFOPLIST_FILE = "$(SRCROOT)/SmartHome/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -331,7 +331,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 582KY6XV9S;
+				DEVELOPMENT_TEAM = XXYXWGAW9Y;
 				INFOPLIST_FILE = "$(SRCROOT)/SmartHome/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

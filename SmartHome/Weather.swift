@@ -77,7 +77,7 @@ class Weather {
         components.host = "api.openweathermap.org"
         components.path = "/data/2.5/weather"
         let query = URLQueryItem(name: "q", value: city.replacingOccurrences(of: " ", with: "+"))
-        let appid = URLQueryItem(name: "appid", value: WeatherAPI.key)
+        let appid = URLQueryItem(name: "appid", value: Constants.key)
         let units = URLQueryItem(name: "units", value: units.rawValue)
         components.queryItems = [query, appid, units]
         

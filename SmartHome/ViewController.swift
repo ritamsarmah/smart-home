@@ -31,8 +31,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var fanImageView: UIImageView!
     @IBOutlet weak var fanEnabledLabel: UILabel!
     
+    @IBOutlet weak var locationLabel: UILabel! // TODO: REMOVE AFTER DONE DEBUGGING
+    
     // MARK: - Properties
     let weather = Weather()
+    let locationManager = CLLocationManager()
     
     let defaults = UserDefaults.standard // For persisting user preferences
     
@@ -69,6 +72,7 @@ class ViewController: UIViewController {
     // MARK: - Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
         configureUI()
     }
     
@@ -83,6 +87,18 @@ class ViewController: UIViewController {
         
         // Refresh weather data
         self.getWeatherData()
+        
+        // Check if home location set
+        let atHome = defaults.value(forKey: PreferencesKeys.atHome) as! Bool?
+        if atHome == nil {
+            locationLabel.text = "Home location not set"
+        } else {
+            if atHome! {
+                locationLabel.text = "At Home"
+            } else {
+                locationLabel.text = "Away"
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -155,7 +171,7 @@ class ViewController: UIViewController {
         // Get weather data
         weather.getWeather(for: city, in: units) { (data, error) in
             if let weatherData = data {
-
+                
                 let image = UIImage(named: "\(weatherData.getIconName()).pdf")
                 
                 DispatchQueue.main.async {
@@ -200,12 +216,21 @@ class ViewController: UIViewController {
         lightPower = roundedValue
         sender.value = roundedValue
     }
-
+    
 }
 
-// https://www.raywenderlich.com/136165/core-location-geofencing-tutorial
 extension ViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        locationLabel.text = "At home"
+    }
     
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        if region.identifier == Constants.regionID {
+            locationLabel.text = "At home"
+        }
+    }
     
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        locationLabel.text = "Away"
+    }
 }
-

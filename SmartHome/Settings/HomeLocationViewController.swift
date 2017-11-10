@@ -24,6 +24,7 @@ class HomeLocationViewController: UIViewController {
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+
         configureUI()
     }
     
@@ -45,11 +46,19 @@ class HomeLocationViewController: UIViewController {
     }
     
     @IBAction func confirmPressed(_ sender: UIButton) {
-        // TODO: If exists, remove existing location monitoring and Save location in userDefaults and start new monitoring
+        // TODO: If exists, remove existing location monitoring and start new monitoring
         self.dismiss(animated: true, completion: nil)
         
-//        let region = CLCircularRegion(center: mapView.userLocation.coordinate, radius: 50, identifier: "home")
-//        locationManager.startMonitoring(for: region)
+        // Stop monitoring previous location
+        locationManager.monitoredRegions.forEach {
+            if $0.identifier == Constants.regionID {
+                locationManager.stopMonitoring(for: $0)
+            }
+        }
+        let region = CLCircularRegion(center: mapView.userLocation.coordinate, radius: 1, identifier: Constants.regionID)
+        locationManager.startMonitoring(for: region)
+        let defaults = UserDefaults.standard
+        defaults.set(true, forKey: PreferencesKeys.atHome)
     }
 }
 
