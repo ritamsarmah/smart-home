@@ -33,8 +33,12 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var locationLabel: UILabel! // TODO: REMOVE AFTER DONE DEBUGGING
     
+    let activityIndicator = UIActivityIndicatorView()
+    var refreshButton = UIBarButtonItem()
+    
     // MARK: - Properties
     let weather = Weather()
+    let server = ArduinoServer()
     let locationManager = CLLocationManager()
     
     let defaults = UserDefaults.standard // For persisting user preferences
@@ -85,8 +89,9 @@ class ViewController: UIViewController {
         // Set up observer for when application becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
         
-        // Refresh weather data
-        self.getWeatherData()
+        // Refresh data
+        getWeatherData()
+        refreshServerData()
         
         // Check if home location set
         let atHome = defaults.value(forKey: PreferencesKeys.atHome) as! Bool?
@@ -116,6 +121,14 @@ class ViewController: UIViewController {
         barButton.tintColor = UIColor.black
         self.navigationItem.rightBarButtonItem = barButton
         
+        // Add loading indicator to navigation bar
+        activityIndicator.activityIndicatorViewStyle = .gray
+        setLoadingState(withLabels: true)
+        
+        // Set refresh button
+        refreshButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTapped))
+        refreshButton.tintColor = .black
+        
         // Setup light power slider
         lightPowerSlider.minimumValue = 0
         lightPowerSlider.maximumValue = 3
@@ -133,19 +146,10 @@ class ViewController: UIViewController {
         lightsImageView.image = UIImage(named: "light")
         fanImageView.image = UIImage(named: "fan")
         
-        // TODO: Set UI based on state on server
-        
-        // Set labels for on or off
-        lightsEnabledLabel.text = lightEnabled ? "On" : "Off"
-        fanEnabledLabel.text = fanEnabled ? "On" : "Off"
-        
-        lightPowerSlider.value = lightPower
-        
         // Set greeting label based on time of day
         let date = Date()
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: date)
-        print(hour)
         switch hour {
         case 0..<12:
             greetingLabel.text = "Good Morning"
@@ -185,12 +189,62 @@ class ViewController: UIViewController {
         }
     }
     
+    func refreshServerData() {
+        print("Connecting to server...")
+        setLoadingState(withLabels: false)
+        server.getData { (data, error) in
+            if let error = error {
+                print("Error connecting to server.")
+                print(error)
+                DispatchQueue.main.async {
+                    self.fanEnabledLabel.text = "Failed to connect."
+                    self.lightsEnabledLabel.text = "Failed to connect."
+                }
+            }
+            if let data = data {
+                print("Success. Data response: \(data)")
+                DispatchQueue.main.async {
+                    // Set fan state
+                    if data.ac == 0 {
+                        self.fanEnabled = false
+                    } else {
+                        self.fanEnabled = true
+                    }
+                    
+                    // Set light power
+                    self.lightPower = Float(data.lightLevel)
+                    print("CURRENT LIGHTPOWER: \(self.lightPower)")
+                    self.lightPowerSlider.value = self.lightPower
+                    
+                    // Set fan card
+                    self.setImage(for: self.fanButton, with: self.fanEnabled)
+                    self.fanEnabledLabel.text = self.fanEnabled ? "On" : "Off"
+                    self.fanButton.isEnabled = true
+                    
+                    // Set light card
+                    self.lightsEnabledLabel.text = self.lightEnabled ? "On" : "Off"
+                    self.lightButton.isEnabled = true
+                }
+            }
+            DispatchQueue.main.async {
+                self.setNotLoadingState()
+            }
+        }
+    }
+    
     @objc func settingsTapped() {
         performSegue(withIdentifier: "showSettings", sender: self)
     }
     
+    @objc func refreshTapped() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: activityIndicator)
+        setLoadingState(withLabels: true)
+        refreshServerData()
+    }
+    
     @objc func applicationDidBecomeActive() {
         getWeatherData()
+        refreshServerData()
     }
     
     @IBAction func lightButtonPressed(_ sender: UIButton) {
@@ -200,7 +254,19 @@ class ViewController: UIViewController {
     
     @IBAction func fanButtonPressed(_ sender: UIButton) {
         fanEnabled = !fanEnabled
-        setImage(for: sender, with: fanEnabled)
+        sender.isEnabled = false
+        server.switchAC(state: fanEnabled) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            if let data = data {
+                print("AC state from server: \(data.ac)")
+            }
+            DispatchQueue.main.async {
+                sender.isEnabled = true
+                self.setImage(for: sender, with: self.fanEnabled)
+            }
+        }
     }
     
     func setImage(for button: UIButton, with state: Bool) {
@@ -209,6 +275,25 @@ class ViewController: UIViewController {
         } else {
             button.setImage(#imageLiteral(resourceName: "buttonOff"), for: .normal)
         }
+    }
+    
+    func setLoadingState(withLabels: Bool) {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: activityIndicator)
+        activityIndicator.startAnimating()
+        
+        if withLabels == true {
+            fanEnabledLabel.text = "Loading..."
+            lightsEnabledLabel.text = "Loading..."
+        }
+        
+        // Disable buttons on data is retrieved in viewWillAppear
+        fanButton.isEnabled = false
+        lightButton.isEnabled = false
+    }
+    
+    func setNotLoadingState() {
+        self.navigationItem.leftBarButtonItem = refreshButton
+        activityIndicator.stopAnimating()
     }
     
     @IBAction func lightSliderChanged(_ sender: UISlider) {

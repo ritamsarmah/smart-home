@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set("Fahrenheit (°F)", forKey: PreferencesKeys.units)
         }
         if defaults.value(forKey: PreferencesKeys.ipAddress) == nil {
-            defaults.set(URL(string: "192.168.0.101"), forKey: PreferencesKeys.ipAddress)
+            defaults.set(URL(string: "http://192.168.0.101"), forKey: PreferencesKeys.ipAddress)
         }
         
         
