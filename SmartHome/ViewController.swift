@@ -52,17 +52,18 @@ class ViewController: UIViewController {
         didSet {
             if lightEnabled {
                 lightsEnabledLabel.text = "On"
-                if lightPowerSlider.value == 0 {
-                    lightPowerSlider.setValue(1, animated: true)
-                }
+                lightPower = 1
             } else {
                 lightsEnabledLabel.text = "Off"
-                lightPowerSlider.setValue(0, animated: true)
+                lightPower = 0
             }
         }
     }
     var lightPower: Float = 0.0 {
         didSet {
+            if lightPowerSlider.value != lightPower {
+                lightPowerSlider.setValue(lightPower, animated: true)
+            }
             if lightPower == 0 {
                 lightEnabled = false
                 setImage(for: lightButton, with: lightEnabled)
@@ -248,7 +249,19 @@ class ViewController: UIViewController {
     
     @IBAction func lightButtonPressed(_ sender: UIButton) {
         lightEnabled = !lightEnabled
-        setImage(for: sender, with: lightEnabled)
+        sender.isEnabled = false
+        lightPowerSlider.isEnabled = false
+        server.switchLight(state: Int(lightPower)) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            DispatchQueue.main.async {
+                sender.isEnabled = true
+                self.lightPowerSlider.isEnabled = true
+                self.setImage(for: sender, with: self.lightEnabled)
+            }
+        }
+        
     }
     
     @IBAction func fanButtonPressed(_ sender: UIButton) {

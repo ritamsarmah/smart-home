@@ -67,7 +67,7 @@ class ArduinoServer {
         var url = defaults.url(forKey: PreferencesKeys.ipAddress)!
         
         let numState = state ? 1 : 0
-        url.appendPathComponent("a\(numState)", isDirectory: false)
+        url.appendPathComponent("a\(numState)")
         
         var request = URLRequest(url: url)
         
@@ -100,6 +100,42 @@ class ArduinoServer {
             }
         }
         
+        task.resume()
+    }
+    
+    func switchLight(state: Int, completion: @escaping (ArduinoData?, Error?) -> Void) {
+        var url = defaults.url(forKey: PreferencesKeys.ipAddress)!
+        
+        url.appendPathComponent("l\(state)")
+        var request = URLRequest(url:url)
+        
+        request.httpMethod = "GET"
+        request.timeoutInterval = 5
+        
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request) { (data, response, error) in
+            guard error == nil else{
+                completion(nil, error)
+                return
+            }
+            guard let responseData = data else {
+                let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Data was not retrieved from request"]) as Error
+                completion(nil,error)
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            
+            do {
+                let strData = try decoder.decode(ArduinoStringData.self, from: responseData)
+                let arduinoData = ArduinoData(temperature: Float(strData.Temperature)!, humidity: Float(strData.Humidity)!, lightLevel: Int(strData.Light_Level)!, ac: Int(strData.AC)!)
+                completion(arduinoData,nil)
+            } catch {
+                print("Error")
+                completion(nil, error)
+            }
+        }
         task.resume()
     }
     
