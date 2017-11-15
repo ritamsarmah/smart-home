@@ -52,24 +52,10 @@ class ViewController: UIViewController {
         didSet {
             if lightEnabled {
                 lightsEnabledLabel.text = "On"
-                lightPower = 1
+                lightPowerSlider.setValue(1, animated: true)
             } else {
                 lightsEnabledLabel.text = "Off"
-                lightPower = 0
-            }
-        }
-    }
-    var lightPower: Float = 0.0 {
-        didSet {
-            if lightPowerSlider.value != lightPower {
-                lightPowerSlider.setValue(lightPower, animated: true)
-            }
-            if lightPower == 0 {
-                lightEnabled = false
-                setImage(for: lightButton, with: lightEnabled)
-            } else {
-                lightEnabled = true
-                setImage(for: lightButton, with: lightEnabled)
+                lightPowerSlider.setValue(0, animated: true)
             }
         }
     }
@@ -210,8 +196,7 @@ class ViewController: UIViewController {
                    
                     
                     // Set light power
-                    self.lightPower = Float(data.lightLevel)
-                    self.lightPowerSlider.value = self.lightPower
+                    self.lightPowerSlider.value = Float(data.lightLevel)
                     
                     // Set fan card
                     self.setImage(for: self.fanButton, with: self.fanEnabled)
@@ -251,7 +236,7 @@ class ViewController: UIViewController {
         lightEnabled = !lightEnabled
         sender.isEnabled = false
         lightPowerSlider.isEnabled = false
-        server.switchLight(state: Int(lightPower)) { (data, error) in
+        server.switchLight(state: Int(lightPowerSlider.value)) { (data, error) in
             if let error = error {
                 print(error)
             }
@@ -280,8 +265,14 @@ class ViewController: UIViewController {
     
     @IBAction func lightSliderChanged(_ sender: UISlider) {
         let roundedValue = round(sender.value / step) * step
-        lightPower = roundedValue
         sender.value = roundedValue
+        
+        if roundedValue == 0 {
+            lightEnabled = false
+        } else {
+            lightEnabled = true
+        }
+        setImage(for: lightButton, with: lightEnabled)
     }
     
     
