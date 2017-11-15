@@ -17,8 +17,8 @@ class ViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet weak var weatherImageView: UIImageView!
     @IBOutlet weak var greetingView: UIView!
-    @IBOutlet weak var greetingLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var insideTempLabel: UILabel!
     
     @IBOutlet weak var lightButton: UIButton!
     @IBOutlet weak var lightsView: UIView!
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var fanImageView: UIImageView!
     @IBOutlet weak var fanEnabledLabel: UILabel!
     
-    @IBOutlet weak var locationLabel: UILabel! // TODO: REMOVE AFTER DONE DEBUGGING
+    @IBOutlet weak var locationLabel: UILabel!
     
     let activityIndicator = UIActivityIndicatorView()
     var refreshButton = UIBarButtonItem()
@@ -99,9 +99,9 @@ class ViewController: UIViewController {
             locationLabel.text = "Home location not set"
         } else {
             if atHome! {
-                locationLabel.text = "At Home"
+                locationLabel.text = "Welcome Home"
             } else {
-                locationLabel.text = "Away"
+                locationLabel.text = "Away from Home"
             }
         }
     }
@@ -145,25 +145,12 @@ class ViewController: UIViewController {
         
         lightsImageView.image = UIImage(named: "light")
         fanImageView.image = UIImage(named: "fan")
-        
-        // Set greeting label based on time of day
-        let date = Date()
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date)
-        switch hour {
-        case 0..<12:
-            greetingLabel.text = "Good Morning"
-        case 12..<18:
-            greetingLabel.text = "Good Afternoon"
-        default:
-            greetingLabel.text = "Good Evening"
-        }
     }
     
     func getWeatherData() {
         // Check user settings for location and units
         let city = defaults.string(forKey: PreferencesKeys.city)!
-        let userUnits = self.defaults.string(forKey: PreferencesKeys.units)!
+        let userUnits = defaults.string(forKey: PreferencesKeys.units)!
         
         var units: Units = .fahrenheit
         if userUnits == "Fahrenheit (°F)" {
@@ -197,8 +184,9 @@ class ViewController: UIViewController {
                 print("Error connecting to server.")
                 print(error)
                 DispatchQueue.main.async {
-                    self.fanEnabledLabel.text = "Failed to connect."
-                    self.lightsEnabledLabel.text = "Failed to connect."
+                    self.fanEnabledLabel.text = "Offline"
+                    self.lightsEnabledLabel.text = "Offline"
+                    self.insideTempLabel.text = "Unable to reach server."
                 }
             }
             if let data = data {
@@ -211,19 +199,30 @@ class ViewController: UIViewController {
                         self.fanEnabled = true
                     }
                     
+                    // Set temperature label
+                    let userUnits = self.defaults.string(forKey: PreferencesKeys.units)!
+                    if userUnits == "Fahrenheit (°F)" {
+                         self.insideTempLabel.text = "Home temperature is \(self.celsiusToFahrenheit(data.temperature))°F"
+                    } else if userUnits == "Celsius (°C)" {
+                        self.insideTempLabel.text = "Home temperature is \(data.temperature)°C"
+                    }
+                   
+                    
                     // Set light power
                     self.lightPower = Float(data.lightLevel)
-                    print("CURRENT LIGHTPOWER: \(self.lightPower)")
                     self.lightPowerSlider.value = self.lightPower
                     
                     // Set fan card
                     self.setImage(for: self.fanButton, with: self.fanEnabled)
                     self.fanEnabledLabel.text = self.fanEnabled ? "On" : "Off"
-                    self.fanButton.isEnabled = true
                     
                     // Set light card
                     self.lightsEnabledLabel.text = self.lightEnabled ? "On" : "Off"
+                    
+                    // Enable UI
+                    self.fanButton.isEnabled = true
                     self.lightButton.isEnabled = true
+                    self.lightPowerSlider.isEnabled = true
                 }
             }
             DispatchQueue.main.async {
@@ -259,15 +258,19 @@ class ViewController: UIViewController {
             if let error = error {
                 print(error)
             }
-            if let data = data {
-                print("AC state from server: \(data.ac)")
-            }
             DispatchQueue.main.async {
                 sender.isEnabled = true
                 self.setImage(for: sender, with: self.fanEnabled)
             }
         }
     }
+    
+    @IBAction func lightSliderChanged(_ sender: UISlider) {
+        let roundedValue = round(sender.value / step) * step
+        lightPower = roundedValue
+        sender.value = roundedValue
+    }
+    
     
     func setImage(for button: UIButton, with state: Bool) {
         if state == true {
@@ -284,11 +287,13 @@ class ViewController: UIViewController {
         if withLabels == true {
             fanEnabledLabel.text = "Loading..."
             lightsEnabledLabel.text = "Loading..."
+            insideTempLabel.text = "Connecting to server..."
         }
         
         // Disable buttons on data is retrieved in viewWillAppear
         fanButton.isEnabled = false
         lightButton.isEnabled = false
+        lightPowerSlider.isEnabled = false
     }
     
     func setNotLoadingState() {
@@ -296,26 +301,24 @@ class ViewController: UIViewController {
         activityIndicator.stopAnimating()
     }
     
-    @IBAction func lightSliderChanged(_ sender: UISlider) {
-        let roundedValue = round(sender.value / step) * step
-        lightPower = roundedValue
-        sender.value = roundedValue
+    func celsiusToFahrenheit(_ celsius: Float) -> Float {
+        return (celsius * 1.8) + 32;
     }
     
 }
 
 extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        locationLabel.text = "At home"
+        locationLabel.text = "Welcome Home"
     }
     
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         if region.identifier == Constants.regionID {
-            locationLabel.text = "At home"
+            locationLabel.text = "Welcome Home"
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        locationLabel.text = "Away"
+        locationLabel.text = "Away from Home"
     }
 }
