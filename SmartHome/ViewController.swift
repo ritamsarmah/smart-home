@@ -137,6 +137,46 @@ class ViewController: UIViewController {
         lightsImageView.image = UIImage(named: "light")
         fanImageView.image = UIImage(named: "fan")
     }
+    func configureUI(using data: ArduinoData)
+    {
+        DispatchQueue.main.async {
+            // Set fan state
+            if data.ac == 0 {
+                self.fanEnabled = false
+            } else {
+                self.fanEnabled = true
+            }
+            
+            // Set temperature label
+            let userUnits = self.defaults.string(forKey: PreferencesKeys.units)!
+            if userUnits == "Fahrenheit (°F)" {
+                self.insideTempLabel.text = "Home temperature is \(self.celsiusToFahrenheit(data.temperature))°F"
+            } else if userUnits == "Celsius (°C)" {
+                self.insideTempLabel.text = "Home temperature is \(data.temperature)°C"
+            }
+            
+            // Set light power
+            self.lightPowerSlider.value = Float(data.lightLevel)
+            if self.lightPowerSlider.value == 0 {
+                self.lightEnabled = false
+            } else {
+                self.lightEnabled = true
+            }
+            
+            // Set fan card
+            self.setImage(for: self.fanButton, with: self.fanEnabled)
+            self.fanEnabledLabel.text = self.fanEnabled ? "On" : "Off"
+            
+            // Set light card
+            self.setImage(for: self.lightButton, with: self.lightEnabled)
+            self.lightsEnabledLabel.text = self.lightEnabled ? "On" : "Off"
+            
+            // Enable UI
+            self.fanButton.isEnabled = true
+            self.lightButton.isEnabled = true
+            self.lightPowerSlider.isEnabled = true
+        }
+    }
     
     func getWeatherData() {
         // Check user settings for location and units
@@ -185,49 +225,14 @@ class ViewController: UIViewController {
             }
             if let data = data {
                 print("Success. Data response: \(data)")
-                DispatchQueue.main.async {
-                    // Set fan state
-                    if data.ac == 0 {
-                        self.fanEnabled = false
-                    } else {
-                        self.fanEnabled = true
-                    }
-                    
-                    // Set temperature label
-                    let userUnits = self.defaults.string(forKey: PreferencesKeys.units)!
-                    if userUnits == "Fahrenheit (°F)" {
-                         self.insideTempLabel.text = "Home temperature is \(self.celsiusToFahrenheit(data.temperature))°F"
-                    } else if userUnits == "Celsius (°C)" {
-                        self.insideTempLabel.text = "Home temperature is \(data.temperature)°C"
-                    }
-                   
-                    // Set light power
-                    self.lightPowerSlider.value = Float(data.lightLevel)
-                    if self.lightPowerSlider.value == 0 {
-                        self.lightEnabled = false
-                    } else {
-                        self.lightEnabled = true
-                    }
-                    
-                    // Set fan card
-                    self.setImage(for: self.fanButton, with: self.fanEnabled)
-                    self.fanEnabledLabel.text = self.fanEnabled ? "On" : "Off"
-                    
-                    // Set light card
-                    self.setImage(for: self.lightButton, with: self.lightEnabled)
-                    self.lightsEnabledLabel.text = self.lightEnabled ? "On" : "Off"
-                    
-                    // Enable UI
-                    self.fanButton.isEnabled = true
-                    self.lightButton.isEnabled = true
-                    self.lightPowerSlider.isEnabled = true
-                }
+                self.configureUI(using: data)
             }
             DispatchQueue.main.async {
                 self.setNotLoadingState()
             }
         }
     }
+    
     
     @objc func settingsTapped() {
         performSegue(withIdentifier: "showSettings", sender: self)
@@ -339,10 +344,27 @@ class ViewController: UIViewController {
 extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         locationLabel.text = "Welcome Home"
+        server.switchUserLocation(state: true) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            if let data = data {
+                self.configureUI(using: data)
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         locationLabel.text = "Away from Home"
+        server.switchUserLocation(state: false) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            if let data = data {
+                self.configureUI(using: data)
+            }
+            
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
