@@ -178,6 +178,9 @@ class ViewController: UIViewController {
                     self.fanEnabledLabel.text = "Offline"
                     self.lightsEnabledLabel.text = "Offline"
                     self.insideTempLabel.text = "Unable to reach server."
+                    self.lightPowerSlider.isEnabled = false
+                    self.lightButton.isEnabled = false
+                    self.fanButton.isEnabled = false
                 }
             }
             if let data = data {
@@ -338,13 +341,13 @@ extension ViewController: CLLocationManagerDelegate {
         locationLabel.text = "Welcome Home"
     }
     
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        locationLabel.text = "Away from Home"
+    }
+    
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         if region.identifier == Constants.regionID {
             locationLabel.text = "Welcome Home"
         }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        locationLabel.text = "Away from Home"
     }
 }
