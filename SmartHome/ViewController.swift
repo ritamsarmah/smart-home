@@ -40,6 +40,7 @@ class ViewController: UIViewController {
     let weather = Weather()
     let server = ArduinoServer()
     let locationManager = CLLocationManager()
+    var timer = Timer()
     
     let defaults = UserDefaults.standard // For persisting user preferences
     
@@ -137,6 +138,7 @@ class ViewController: UIViewController {
         lightsImageView.image = UIImage(named: "light")
         fanImageView.image = UIImage(named: "fan")
     }
+    
     func configureUI(using data: ArduinoData)
     {
         DispatchQueue.main.async {
@@ -207,7 +209,8 @@ class ViewController: UIViewController {
         }
     }
     
-    func refreshServerData() {
+    @objc func refreshServerData() {
+        self.timer.invalidate()
         print("Connecting to server...")
         setLoadingState(withLabels: false)
         server.getData { (data, error) in
@@ -228,6 +231,7 @@ class ViewController: UIViewController {
                 self.configureUI(using: data)
             }
             DispatchQueue.main.async {
+                self.setTimer()
                 self.setNotLoadingState()
             }
         }
@@ -339,32 +343,38 @@ class ViewController: UIViewController {
         return (celsius * 1.8) + 32;
     }
     
+    func setTimer() {
+        print("timer set")
+        self.timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(refreshServerData), userInfo: nil, repeats: true)
+        // Fix Me
+    }
+    
 }
 
 extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         locationLabel.text = "Welcome Home"
-        server.switchUserLocation(state: true) { (data, error) in
-            if let error = error {
-                print(error)
-            }
-            if let data = data {
-                self.configureUI(using: data)
-            }
-        }
+//        server.switchUserLocation(state: true) { (data, error) in
+//            if let error = error {
+//                print(error)
+//            }
+//            if let data = data {
+//                self.configureUI(using: data)
+//            }
+//        }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         locationLabel.text = "Away from Home"
-        server.switchUserLocation(state: false) { (data, error) in
-            if let error = error {
-                print(error)
-            }
-            if let data = data {
-                self.configureUI(using: data)
-            }
-            
-        }
+//        server.switchUserLocation(state: false) { (data, error) in
+//            if let error = error {
+//                print(error)
+//            }
+//            if let data = data {
+//                self.configureUI(using: data)
+//            }
+//
+//        }
     }
     
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
