@@ -130,6 +130,7 @@ class ArduinoServer {
             do {
                 let strData = try decoder.decode(ArduinoStringData.self, from: responseData)
                 let arduinoData = ArduinoData(temperature: Float(strData.Temperature)!, humidity: Float(strData.Humidity)!, lightLevel: Int(strData.Light_Level)!, ac: Int(strData.AC)!)
+                print(arduinoData)
                 completion(arduinoData,nil)
             } catch {
                 print("Error")

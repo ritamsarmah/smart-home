@@ -52,7 +52,9 @@ class ViewController: UIViewController {
         didSet {
             if lightEnabled {
                 lightsEnabledLabel.text = "On"
-                lightPowerSlider.setValue(1, animated: true)
+                if lightPowerSlider.value == 0 {
+                    lightPowerSlider.setValue(1, animated: true)
+                }
             } else {
                 lightsEnabledLabel.text = "Off"
                 lightPowerSlider.setValue(0, animated: true)
@@ -119,6 +121,8 @@ class ViewController: UIViewController {
         // Setup light power slider
         lightPowerSlider.minimumValue = 0
         lightPowerSlider.maximumValue = 3
+        lightPowerSlider.addTarget(self, action: #selector(lightSliderReleased), for: .touchUpInside)
+        lightPowerSlider.addTarget(self, action: #selector(lightSliderReleased), for: .touchUpOutside)
         
         // Adds rounded corners
         greetingView.layer.cornerRadius = 8
@@ -194,15 +198,20 @@ class ViewController: UIViewController {
                         self.insideTempLabel.text = "Home temperature is \(data.temperature)°C"
                     }
                    
-                    
                     // Set light power
                     self.lightPowerSlider.value = Float(data.lightLevel)
+                    if self.lightPowerSlider.value == 0 {
+                        self.lightEnabled = false
+                    } else {
+                        self.lightEnabled = true
+                    }
                     
                     // Set fan card
                     self.setImage(for: self.fanButton, with: self.fanEnabled)
                     self.fanEnabledLabel.text = self.fanEnabled ? "On" : "Off"
                     
                     // Set light card
+                    self.setImage(for: self.lightButton, with: self.lightEnabled)
                     self.lightsEnabledLabel.text = self.lightEnabled ? "On" : "Off"
                     
                     // Enable UI
@@ -225,6 +234,25 @@ class ViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: activityIndicator)
         setLoadingState(withLabels: true)
         refreshServerData()
+    }
+    
+    @objc func lightSliderReleased() {
+        lightPowerSlider.isEnabled = false
+        server.switchLight(state: Int(lightPowerSlider.value)) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            DispatchQueue.main.async {
+                if self.lightPowerSlider.value == 0 {
+                    self.lightEnabled = false
+                } else {
+                    self.lightEnabled = true
+                }
+                self.lightButton.isEnabled = true
+                self.lightPowerSlider.isEnabled = true
+                self.setImage(for: self.lightButton, with: self.lightEnabled)
+            }
+        }
     }
     
     @objc func applicationDidBecomeActive() {
@@ -252,6 +280,7 @@ class ViewController: UIViewController {
     @IBAction func fanButtonPressed(_ sender: UIButton) {
         fanEnabled = !fanEnabled
         sender.isEnabled = false
+        lightPowerSlider.isEnabled = false
         server.switchAC(state: fanEnabled) { (data, error) in
             if let error = error {
                 print(error)
@@ -266,15 +295,8 @@ class ViewController: UIViewController {
     @IBAction func lightSliderChanged(_ sender: UISlider) {
         let roundedValue = round(sender.value / step) * step
         sender.value = roundedValue
-        
-        if roundedValue == 0 {
-            lightEnabled = false
-        } else {
-            lightEnabled = true
-        }
-        setImage(for: lightButton, with: lightEnabled)
+        lightButton.isEnabled = false
     }
-    
     
     func setImage(for button: UIButton, with state: Bool) {
         if state == true {

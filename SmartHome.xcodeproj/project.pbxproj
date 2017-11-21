@@ -319,11 +319,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VTN59BN4J9;
+				DEVELOPMENT_TEAM = XXYXWGAW9Y;
 				INFOPLIST_FILE = "$(SRCROOT)/SmartHome/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "manav-maroli.SmartHome";
+				PRODUCT_BUNDLE_IDENTIFIER = ritamsarmah.SmartHome;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -335,11 +335,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VTN59BN4J9;
+				DEVELOPMENT_TEAM = XXYXWGAW9Y;
 				INFOPLIST_FILE = "$(SRCROOT)/SmartHome/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "manav-maroli.SmartHome";
+				PRODUCT_BUNDLE_IDENTIFIER = ritamsarmah.SmartHome;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
