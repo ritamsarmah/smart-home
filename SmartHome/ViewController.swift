@@ -345,8 +345,7 @@ class ViewController: UIViewController {
     
     func setTimer() {
         print("timer set")
-        self.timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(refreshServerData), userInfo: nil, repeats: true)
-        // Fix Me
+        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(refreshServerData), userInfo: nil, repeats: false)
     }
     
 }
@@ -354,32 +353,41 @@ class ViewController: UIViewController {
 extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         locationLabel.text = "Welcome Home"
-//        server.switchUserLocation(state: true) { (data, error) in
-//            if let error = error {
-//                print(error)
-//            }
-//            if let data = data {
-//                self.configureUI(using: data)
-//            }
-//        }
+        server.switchUserLocation(state: true) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            if let data = data {
+                self.configureUI(using: data)
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         locationLabel.text = "Away from Home"
-//        server.switchUserLocation(state: false) { (data, error) in
-//            if let error = error {
-//                print(error)
-//            }
-//            if let data = data {
-//                self.configureUI(using: data)
-//            }
-//
-//        }
+        server.switchUserLocation(state: false) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            if let data = data {
+                self.configureUI(using: data)
+            }
+
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         if region.identifier == Constants.regionID {
             locationLabel.text = "Welcome Home"
+        }
+        server.switchUserLocation(state: true) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            if let data = data {
+                self.configureUI(using: data)
+            }
+            
         }
     }
 }

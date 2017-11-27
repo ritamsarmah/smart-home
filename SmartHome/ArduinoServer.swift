@@ -147,7 +147,7 @@ class ArduinoServer {
         var url = defaults.url(forKey: PreferencesKeys.ipAddress)!
         
         let numState = state ? 1 : 0
-        url.appendPathComponent("a\(numState)") //change letter
+        url.appendPathComponent("p\(numState)")
         
         var request = URLRequest(url: url)
         
