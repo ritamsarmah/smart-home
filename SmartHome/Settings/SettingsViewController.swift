@@ -75,7 +75,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         defaults.set(sender.isOn, forKey: PreferencesKeys.automateDevice)
         server.switchAutomation(state: sender.isOn) { (data, error) in
             if let error = error {
-                self.automationSwitchChanged(sender)
+                print(error)
             }
         }
     }
