@@ -14,9 +14,11 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var locationDetailLabel: UILabel!
     @IBOutlet weak var unitsDetailLabel: UILabel!
     @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var automationSwitch: UISwitch!
     
     // Properties
     let defaults = UserDefaults.standard
+    let server = ArduinoServer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,9 +40,14 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
             unitsDetailLabel.text = userUnits
         }
         
-        let useraddress = defaults.url(forKey: PreferencesKeys.ipAddress)
-        if addressTextField.text != useraddress?.absoluteString {
-            addressTextField.text = useraddress?.absoluteString
+        let userAddress = defaults.url(forKey: PreferencesKeys.ipAddress)
+        if addressTextField.text != userAddress?.absoluteString {
+            addressTextField.text = userAddress?.absoluteString
+        }
+        
+        let userAutomation = defaults.bool(forKey: PreferencesKeys.automateDevice)
+        if automationSwitch.isOn != userAutomation {
+            automationSwitch.setOn(userAutomation, animated: true)
         }
     }
     
@@ -62,5 +69,14 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
             let url = URL(string: ip)
             defaults.set(url, forKey: PreferencesKeys.ipAddress)}
         return true
+    }
+    
+    @IBAction func automationSwitchChanged(_ sender: UISwitch) {
+        defaults.set(sender.isOn, forKey: PreferencesKeys.automateDevice)
+        server.switchAutomation(state: sender.isOn) { (data, error) in
+            if let error = error {
+                self.automationSwitchChanged(sender)
+            }
+        }
     }
 }

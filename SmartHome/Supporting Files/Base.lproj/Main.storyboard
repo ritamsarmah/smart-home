@@ -298,6 +298,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mpT-U6-bqY">
                                                     <rect key="frame" x="310" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="automationSwitchChanged:" destination="QnJ-Ts-UmF" eventType="valueChanged" id="Tu6-U8-EGO"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -368,6 +371,7 @@
                     <navigationItem key="navigationItem" title="Root View Controller" id="12x-ar-jHb"/>
                     <connections>
                         <outlet property="addressTextField" destination="7Fj-Ja-M30" id="dLK-WK-evk"/>
+                        <outlet property="automationSwitch" destination="mpT-U6-bqY" id="Jb7-sw-CHo"/>
                         <outlet property="locationDetailLabel" destination="IOl-YM-Mux" id="nrC-We-CAn"/>
                         <outlet property="unitsDetailLabel" destination="xwJ-hU-H4q" id="07V-Ex-hmF"/>
                     </connections>

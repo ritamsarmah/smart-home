@@ -67,6 +67,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
+        
+        // Sync initial automation state with server
+        let userAutomation = defaults.bool(forKey: PreferencesKeys.automateDevice)
+        server.switchAutomation(state: userAutomation) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+        }
+        
         configureUI()
     }
     
@@ -79,9 +88,8 @@ class ViewController: UIViewController {
         // Set up observer for when application becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
         
-        // Refresh data
-        getWeatherData()
-        refreshServerData()
+        setLoadingState(labelsReset: false, buttonsDisabled: true)
+        refreshData()
         
         // Check if home location set
         let atHome = defaults.value(forKey: PreferencesKeys.atHome) as! Bool?
@@ -104,16 +112,13 @@ class ViewController: UIViewController {
         self.title = "Your Devices"
         
         // Add settings button
-        let barButton = UIBarButtonItem()
-        barButton.image = #imageLiteral(resourceName: "settings")
-        barButton.target = self
-        barButton.action = #selector(settingsTapped)
+        let barButton = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(settingsTapped))
         barButton.tintColor = UIColor.black
         self.navigationItem.rightBarButtonItem = barButton
         
         // Add loading indicator to navigation bar
         activityIndicator.activityIndicatorViewStyle = .gray
-        setLoadingState(withLabels: true)
+        setLoadingState(labelsReset: true, buttonsDisabled: true)
         
         // Set refresh button
         refreshButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshTapped))
@@ -139,8 +144,7 @@ class ViewController: UIViewController {
         fanImageView.image = UIImage(named: "fan")
     }
     
-    func configureUI(using data: ArduinoData)
-    {
+    func configureUI(using data: ArduinoData) {
         DispatchQueue.main.async {
             // Set fan state
             if data.ac == 0 {
@@ -174,10 +178,18 @@ class ViewController: UIViewController {
             self.lightsEnabledLabel.text = self.lightEnabled ? "On" : "Off"
             
             // Enable UI
-            self.fanButton.isEnabled = true
-            self.lightButton.isEnabled = true
-            self.lightPowerSlider.isEnabled = true
+            let automationEnabled = self.defaults.bool(forKey: PreferencesKeys.automateDevice)
+            if !automationEnabled {
+                self.fanButton.isEnabled = true
+                self.lightButton.isEnabled = true
+                self.lightPowerSlider.isEnabled = true
+            }
         }
+    }
+    
+    func refreshData() {
+        getWeatherData()
+        refreshServerData()
     }
     
     func getWeatherData() {
@@ -212,7 +224,6 @@ class ViewController: UIViewController {
     @objc func refreshServerData() {
         self.timer.invalidate()
         print("Connecting to server...")
-        setLoadingState(withLabels: false)
         server.getData { (data, error) in
             if let error = error {
                 print("Error connecting to server.")
@@ -244,8 +255,8 @@ class ViewController: UIViewController {
     
     @objc func refreshTapped() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: activityIndicator)
-        setLoadingState(withLabels: true)
-        refreshServerData()
+        setLoadingState(labelsReset: true, buttonsDisabled: true)
+        refreshData()
     }
     
     @objc func lightSliderReleased() {
@@ -268,8 +279,8 @@ class ViewController: UIViewController {
     }
     
     @objc func applicationDidBecomeActive() {
-        getWeatherData()
-        refreshServerData()
+        setLoadingState(labelsReset: false, buttonsDisabled: true)
+        refreshData()
     }
     
     @IBAction func lightButtonPressed(_ sender: UIButton) {
@@ -318,20 +329,21 @@ class ViewController: UIViewController {
         }
     }
     
-    func setLoadingState(withLabels: Bool) {
+    func setLoadingState(labelsReset: Bool, buttonsDisabled: Bool) {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: activityIndicator)
         activityIndicator.startAnimating()
         
-        if withLabels == true {
+        if labelsReset {
             fanEnabledLabel.text = "Loading..."
             lightsEnabledLabel.text = "Loading..."
             insideTempLabel.text = "Connecting to server..."
         }
         
-        // Disable buttons on data is retrieved in viewWillAppear
-        fanButton.isEnabled = false
-        lightButton.isEnabled = false
-        lightPowerSlider.isEnabled = false
+        if buttonsDisabled {
+            fanButton.isEnabled = false
+            lightButton.isEnabled = false
+            lightPowerSlider.isEnabled = false
+        }
     }
     
     func setNotLoadingState() {
@@ -344,8 +356,11 @@ class ViewController: UIViewController {
     }
     
     func setTimer() {
-        print("timer set")
-        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(refreshServerData), userInfo: nil, repeats: false)
+        timer = Timer.scheduledTimer(timeInterval: 5.0,
+                                     target: self,
+                                     selector: #selector(refreshServerData),
+                                     userInfo: nil,
+                                     repeats: false)
     }
     
 }

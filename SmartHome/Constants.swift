@@ -18,6 +18,7 @@ struct PreferencesKeys {
 }
 
 struct Constants {
+    // OpenWeatherMap
     static let key = "ec2006f6698767d3866c798e7372d65c"
     
     // CoreLocation

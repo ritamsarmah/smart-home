@@ -29,10 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: PreferencesKeys.ipAddress) == nil {
             defaults.set(URL(string: "http://74.213.228.138"), forKey: PreferencesKeys.ipAddress)
         }
-        
-        
-        
-        // TODO: Add automation key for defaults
+        if defaults.value(forKey: PreferencesKeys.automateDevice) == nil {
+            defaults.set(true, forKey: PreferencesKeys.automateDevice)
+        }
         
         // Configure locationManager
         locationManager.delegate = self
