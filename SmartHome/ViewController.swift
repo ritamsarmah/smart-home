@@ -156,9 +156,9 @@ class ViewController: UIViewController {
             // Set temperature label
             let userUnits = self.defaults.string(forKey: PreferencesKeys.units)!
             if userUnits == "Fahrenheit (°F)" {
-                self.insideTempLabel.text = "Home temperature is \(self.celsiusToFahrenheit(data.temperature))°F"
+                self.insideTempLabel.text = "Home is \(self.celsiusToFahrenheit(data.temperature)) °F with humidity \(data.humidity)%."
             } else if userUnits == "Celsius (°C)" {
-                self.insideTempLabel.text = "Home temperature is \(data.temperature)°C"
+                self.insideTempLabel.text = "Home is \(data.temperature) °C with humidity \(data.humidity)%."
             }
             
             // Set light power
@@ -215,7 +215,7 @@ class ViewController: UIViewController {
                     
                     // Set temp label
                     let unitsText = (units == .fahrenheit) ? "F" : "C"
-                    self.tempLabel.text = "It's \(Int(round(weatherData.getTemperature())))°\(unitsText) in \(city). \(weatherData.getCondition())."
+                    self.tempLabel.text = "It's \(Int(weatherData.getTemperature().rounded())) °\(unitsText) in \(city). \(weatherData.getCondition())."
                 }
             }
         }
