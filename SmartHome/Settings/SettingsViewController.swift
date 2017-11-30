@@ -20,6 +20,9 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     let defaults = UserDefaults.standard
     let server = ArduinoServer()
     
+    var retryCounter = 0    // For automation switch update with server
+    let maxRetries = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addressTextField.delegate = self
@@ -55,6 +58,34 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         self.title = "Settings"
     }
     
+    func switchAutomation(state: Bool) {
+        server.switchAutomation(state: state) { (data, error) in
+            if let error = error {
+                print(error)
+                
+                // Retry if network request fails
+                if self.retryCounter < self.maxRetries {
+                    self.retryCounter += 1
+                    self.switchAutomation(state: state)
+                } else {
+                    // Failure
+                    self.retryCounter = 0
+                    let alert = UIAlertController(title: "Smart Home Unavailable",
+                                                  message: "Unable to update device automation mode.",
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: {
+                        self.automationSwitch.setOn(!state, animated: true)
+                    })
+                }
+            } else {
+                // Successful update on server
+                self.retryCounter = 0
+                self.defaults.set(state, forKey: PreferencesKeys.automateDevice)
+            }
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -72,11 +103,6 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func automationSwitchChanged(_ sender: UISwitch) {
-        defaults.set(sender.isOn, forKey: PreferencesKeys.automateDevice)
-        server.switchAutomation(state: sender.isOn) { (data, error) in
-            if let error = error {
-                print(error)
-            }
-        }
+        switchAutomation(state: sender.isOn)
     }
 }
