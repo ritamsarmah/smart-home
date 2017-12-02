@@ -22,7 +22,6 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     let defaults = UserDefaults.standard
     let server = ArduinoServer()
     
-    var retryCounter = 0    // For automation switch update with server
     let maxRetries = 1
     
     override func viewDidLoad() {
@@ -64,24 +63,22 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
         self.view.addSubview(activityIndicatorView)
     }
     
-    func switchAutomation(state: Bool) {
+    func switchAutomation(state: Bool, retryCount: Int) {
         server.switchAutomation(state: state) { (data, error) in
             if let error = error {
                 print(error)
                 
                 // Retry if network request fails
-                if self.retryCounter < self.maxRetries {
-                    self.retryCounter += 1
-                    self.switchAutomation(state: state)
+                if retryCount < self.maxRetries {
+                    self.switchAutomation(state: state, retryCount: retryCount + 1)
                 } else {
                     // Failure
-                    self.retryCounter = 0
                     DispatchQueue.main.async {
                         self.activityIndicatorView.stopAnimating()
                         
                         // Display error alert
                         let alert = UIAlertController(title: "Server Unavailable",
-                                                      message: "Unable to update automation mode.",
+                                                      message: "Failed to update automation mode.",
                                                       preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                         self.present(alert, animated: true, completion: {
@@ -95,7 +92,6 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                 DispatchQueue.main.async {
                     self.activityIndicatorView.stopAnimating()
                 }
-                self.retryCounter = 0
                 self.defaults.set(state, forKey: PreferencesKeys.automateDevice)
             }
         }
@@ -119,6 +115,6 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func automationSwitchChanged(_ sender: UISwitch) {
         self.activityIndicatorView.startAnimating()
-        switchAutomation(state: sender.isOn)
+        switchAutomation(state: sender.isOn, retryCount: 0)
     }
 }
