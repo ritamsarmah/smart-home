@@ -3,7 +3,7 @@
 //  SmartHome
 //
 //  Created by Ritam Sarmah on 11/4/17.
-//  Copyright © 2017 Bluetooth is OK. All rights reserved.
+//  Copyright © 2017 Ritam Sarmah. All rights reserved.
 //
 
 import UIKit
@@ -15,6 +15,8 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var unitsDetailLabel: UILabel!
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var automationSwitch: UISwitch!
+
+    let activityIndicatorView = BoxActivityIndicatorView()
     
     // Properties
     let defaults = UserDefaults.standard
@@ -56,6 +58,10 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     
     func configureUI() {
         self.title = "Settings"
+        
+        activityIndicatorView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 80)
+        activityIndicatorView.disablesInteraction = true
+        self.view.addSubview(activityIndicatorView)
     }
     
     func switchAutomation(state: Bool) {
@@ -70,16 +76,25 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
                 } else {
                     // Failure
                     self.retryCounter = 0
-                    let alert = UIAlertController(title: "Smart Home Unavailable",
-                                                  message: "Unable to update device automation mode.",
-                                                  preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: {
+                    DispatchQueue.main.async {
+                        self.activityIndicatorView.stopAnimating()
+                        
+                        // Display error alert
+                        let alert = UIAlertController(title: "Server Unavailable",
+                                                      message: "Unable to update automation mode.",
+                                                      preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: {
+
+                        })
                         self.automationSwitch.setOn(!state, animated: true)
-                    })
+                    }
                 }
             } else {
                 // Successful update on server
+                DispatchQueue.main.async {
+                    self.activityIndicatorView.stopAnimating()
+                }
                 self.retryCounter = 0
                 self.defaults.set(state, forKey: PreferencesKeys.automateDevice)
             }
@@ -103,6 +118,7 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func automationSwitchChanged(_ sender: UISwitch) {
+        self.activityIndicatorView.startAnimating()
         switchAutomation(state: sender.isOn)
     }
 }

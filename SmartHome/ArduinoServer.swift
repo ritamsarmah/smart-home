@@ -24,6 +24,7 @@ struct ArduinoData {
 
 class ArduinoServer {
     let defaults = UserDefaults.standard
+    let timeoutInterval = 1.0
     
     func getData(completion: @escaping (ArduinoData?, Error?) -> Void) {
         let url = defaults.url(forKey: PreferencesKeys.ipAddress)!
@@ -31,7 +32,7 @@ class ArduinoServer {
         var request = URLRequest(url: url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = 5
+        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         
@@ -73,7 +74,7 @@ class ArduinoServer {
         var request = URLRequest(url: url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = 5
+        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         
@@ -112,7 +113,7 @@ class ArduinoServer {
         var request = URLRequest(url:url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = 5
+        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         
@@ -152,7 +153,7 @@ class ArduinoServer {
         var request = URLRequest(url: url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = 5
+        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         
@@ -193,7 +194,7 @@ class ArduinoServer {
         var request = URLRequest(url: url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = 5
+        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         

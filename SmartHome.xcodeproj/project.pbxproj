@@ -14,6 +14,7 @@
 		200F85EA1FA06F54003C556A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 200F85E81FA06F54003C556A /* LaunchScreen.storyboard */; };
 		200F85F21FA06F81003C556A /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200F85F11FA06F81003C556A /* Weather.swift */; };
 		20A0E2B81FB2194100FABA02 /* UnitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A0E2B71FB2194100FABA02 /* UnitsViewController.swift */; };
+		20AA7F961FD34C3F00A7C347 /* BoxActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA7F951FD34C3F00A7C347 /* BoxActivityIndicatorView.swift */; };
 		20B857411FAF6E0D009A7C00 /* UserLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B857401FAF6E0D009A7C00 /* UserLocationViewController.swift */; };
 		20B857451FAF752A009A7C00 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B857441FAF752A009A7C00 /* Constants.swift */; };
 		20D7EB6E1FB4EA320087216C /* HomeLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EB6D1FB4EA320087216C /* HomeLocationViewController.swift */; };
@@ -31,6 +32,7 @@
 		200F85EB1FA06F54003C556A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		200F85F11FA06F81003C556A /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		20A0E2B71FB2194100FABA02 /* UnitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsViewController.swift; sourceTree = "<group>"; };
+		20AA7F951FD34C3F00A7C347 /* BoxActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxActivityIndicatorView.swift; sourceTree = "<group>"; };
 		20B857401FAF6E0D009A7C00 /* UserLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationViewController.swift; sourceTree = "<group>"; };
 		20B857441FAF752A009A7C00 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		20D7EB6D1FB4EA320087216C /* HomeLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeLocationViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				20B857441FAF752A009A7C00 /* Constants.swift */,
 				200F85F11FA06F81003C556A /* Weather.swift */,
 				B63262A31FB66DAE002AB96E /* ArduinoServer.swift */,
+				20AA7F951FD34C3F00A7C347 /* BoxActivityIndicatorView.swift */,
 				20A0E2B61FB218FC00FABA02 /* Settings */,
 				20D8B9AD1FAE49DF0077DB85 /* Supporting Files */,
 			);
@@ -182,6 +185,7 @@
 				20A0E2B81FB2194100FABA02 /* UnitsViewController.swift in Sources */,
 				B63262A41FB66DAE002AB96E /* ArduinoServer.swift in Sources */,
 				20D8B9AC1FAE49D70077DB85 /* SettingsViewController.swift in Sources */,
+				20AA7F961FD34C3F00A7C347 /* BoxActivityIndicatorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +323,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XXYXWGAW9Y;
+				DEVELOPMENT_TEAM = 582KY6XV9S;
 				INFOPLIST_FILE = "$(SRCROOT)/SmartHome/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -335,7 +339,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XXYXWGAW9Y;
+				DEVELOPMENT_TEAM = 582KY6XV9S;
 				INFOPLIST_FILE = "$(SRCROOT)/SmartHome/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
