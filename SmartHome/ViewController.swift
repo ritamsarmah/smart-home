@@ -205,7 +205,7 @@ class ViewController: UIViewController {
         }
         
         // Get weather data
-        weather.getWeather(for: city, in: units) { (data, error) in
+        weather.getWeather(for: city, units: units) { (data, error) in
             if let weatherData = data {
                 
                 let image = UIImage(named: "\(weatherData.getIconName()).pdf")

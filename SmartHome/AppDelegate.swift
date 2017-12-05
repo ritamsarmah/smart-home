@@ -67,14 +67,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if region is CLCircularRegion {
-            // TODO: Tell Arduino
             defaults.set(true, forKey: PreferencesKeys.atHome)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
-            // TODO: Tell Arduino
             defaults.set(false, forKey: PreferencesKeys.atHome)
         }
     }

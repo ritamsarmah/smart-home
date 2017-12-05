@@ -71,7 +71,7 @@ struct WeatherData: Codable {
 }
 
 class Weather {
-    func getWeather(for city: String, in units: Units, completion: @escaping (WeatherData?, Error?) -> Void) {
+    func getWeather(for city: String, units: Units, completion: @escaping (WeatherData?, Error?) -> Void) {
         var components = URLComponents()
         components.scheme = "http"
         components.host = "api.openweathermap.org"

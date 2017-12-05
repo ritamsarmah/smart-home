@@ -46,7 +46,6 @@ class HomeLocationViewController: UIViewController {
     }
     
     @IBAction func confirmPressed(_ sender: UIButton) {
-        // TODO: If exists, remove existing location monitoring and start new monitoring
         self.dismiss(animated: true, completion: nil)
         
         // Stop monitoring previous location

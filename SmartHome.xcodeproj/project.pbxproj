@@ -31,6 +31,8 @@
 		200F85E91FA06F54003C556A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		200F85EB1FA06F54003C556A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		200F85F11FA06F81003C556A /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
+		2043F9B61FD71A36001D7D9A /* Boelter Hall.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Boelter Hall.gpx"; sourceTree = "<group>"; };
+		2043F9B71FD71BAF001D7D9A /* Diddy Riese.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Diddy Riese.gpx"; sourceTree = "<group>"; };
 		20A0E2B71FB2194100FABA02 /* UnitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsViewController.swift; sourceTree = "<group>"; };
 		20AA7F951FD34C3F00A7C347 /* BoxActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxActivityIndicatorView.swift; sourceTree = "<group>"; };
 		20B857401FAF6E0D009A7C00 /* UserLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,8 @@
 		20D8B9AD1FAE49DF0077DB85 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2043F9B61FD71A36001D7D9A /* Boelter Hall.gpx */,
+				2043F9B71FD71BAF001D7D9A /* Diddy Riese.gpx */,
 				200F85E31FA06F54003C556A /* Main.storyboard */,
 				200F85E61FA06F54003C556A /* Assets.xcassets */,
 				200F85E81FA06F54003C556A /* LaunchScreen.storyboard */,
