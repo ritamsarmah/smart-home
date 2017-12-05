@@ -29,6 +29,8 @@
 	<string>SmartHome requires access to your phone’s location to determine when you are near the Arduino smart home.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>SmartHome requires access to your phone’s location to determine when you are near the Arduino smart home.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>SmartHome requires access to your phone’s location to determine when you are near the Arduino smart home.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
