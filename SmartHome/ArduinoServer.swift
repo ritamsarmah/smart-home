@@ -1,5 +1,5 @@
 //
-//  Arduinoserver.swift
+//  ArduinoServer.swift
 //  SmartHome
 //
 //  Created by Manav Maroli on 11/10/17.
@@ -24,7 +24,7 @@ struct ArduinoData {
 
 class ArduinoServer {
     let defaults = UserDefaults.standard
-    let timeoutInterval = 1.0
+    let timeoutInterval = 5.0
     
     func getData(completion: @escaping (ArduinoData?, Error?) -> Void) {
         let url = defaults.url(forKey: PreferencesKeys.ipAddress)!
@@ -32,7 +32,7 @@ class ArduinoServer {
         var request = URLRequest(url: url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = timeoutInterval
+//        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         
@@ -55,9 +55,7 @@ class ArduinoServer {
                 print(arduinoData)
                 completion(arduinoData, nil)
             } catch {
-                print("Error")
-                completion(nil,error)
-                
+                completion(nil, error)
             }
         }
         
@@ -74,7 +72,7 @@ class ArduinoServer {
         var request = URLRequest(url: url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = timeoutInterval
+//        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         
@@ -97,9 +95,7 @@ class ArduinoServer {
                 print(arduinoData)
                 completion(arduinoData, nil)
             } catch {
-                print("Error")
-                completion(nil,error)
-                
+                completion(nil, error)
             }
         }
         
@@ -113,7 +109,7 @@ class ArduinoServer {
         var request = URLRequest(url:url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = timeoutInterval
+//        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         
@@ -153,7 +149,7 @@ class ArduinoServer {
         var request = URLRequest(url: url)
         
         request.httpMethod = "GET"
-        request.timeoutInterval = timeoutInterval
+//        request.timeoutInterval = timeoutInterval
         
         let session = URLSession.shared
         
@@ -176,7 +172,6 @@ class ArduinoServer {
                 print(arduinoData)
                 completion(arduinoData, nil)
             } catch {
-                print("Error")
                 completion(nil,error)
                 
             }

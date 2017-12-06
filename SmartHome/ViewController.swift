@@ -66,6 +66,7 @@ class ViewController: UIViewController {
     // MARK: - Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
         locationManager.delegate = self
         
         // Sync initial automation state with server
@@ -74,9 +75,11 @@ class ViewController: UIViewController {
             if let error = error {
                 print(error)
             }
+            if let data = data {
+                print("Success. Data response: \(data)")
+                self.configureUI(using: data)
+            }
         }
-        
-        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,8 +91,8 @@ class ViewController: UIViewController {
         // Set up observer for when application becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
         
-        setLoadingState(labelsReset: false, buttonsDisabled: true)
-        refreshData()
+        getWeatherData()
+        setTimer()
         
         // Check if home location set
         let atHome = defaults.value(forKey: PreferencesKeys.atHome) as! Bool?
@@ -105,7 +108,7 @@ class ViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: .UIApplicationDidBecomeActive, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: .UIApplicationDidBecomeActive, object: nil)
     }
     
     func configureUI() {
