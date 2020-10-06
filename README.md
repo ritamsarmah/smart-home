@@ -1,6 +1,6 @@
 # Smart Home
 
-For many of us, home is the most comfortable place in the world; however, our appliances often require constant adjustment to meet our needs and standards of comfort. We believe with modern wireless technologies your home can be much more thoughtful and delightful. We developed a smart home system that automatically keeps your house cool and bright, while saving energy at the same time. The system is comprised of three main parts: an iOS application, an Arduino micro-controller, and the sensors and home devices (i.e. a light and AC).
+A prototype smart home system that automatically keeps your house cool and bright, while saving energy at the same time. The system is comprised of three main parts: an iOS application, an Arduino micro-controller, and the sensors and home devices (i.e. a light and AC).
 
 ## Functionality
 - Display sensor data such as temperature, humidity, light and AC status to mobile device
